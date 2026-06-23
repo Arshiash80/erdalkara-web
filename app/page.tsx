@@ -31,19 +31,18 @@ export default function Home() {
     if (ran.current) return;
     ran.current = true;
 
-    // reveal / language toggle / counters / gallery run immediately;
-    // the 3D clipper polls for window.THREE, which arrives once scripts load.
-    initDesign();
-
+    // Load three core + its example loaders IN ORDER and fully before init.
+    // The design's clipper polls for window.THREE and builds the scene the
+    // instant it appears — so OrbitControls/GLTFLoader must already be attached
+    // to THREE, otherwise `new THREE.OrbitControls(...)` throws on a cold load.
     (async () => {
       try {
-        await loadScript(THREE_SCRIPTS[0]); // three core must load first
-        await Promise.all([
-          loadScript(THREE_SCRIPTS[1]),
-          loadScript(THREE_SCRIPTS[2]),
-        ]);
+        for (const src of THREE_SCRIPTS) await loadScript(src);
       } catch (e) {
         console.warn("[erdalkara] three.js failed to load — clipper falls back", e);
+      } finally {
+        // runs regardless: reveal / language toggle / counters / gallery / clipper
+        initDesign();
       }
     })();
   }, []);
