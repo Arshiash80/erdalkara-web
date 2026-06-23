@@ -23,8 +23,9 @@ Real photography goes in `public/assets/` — see `public/assets/README.md` for 
 
 ## Develop
 ```bash
-npm run dev      # http://localhost:3000
-npm run build
+pnpm install
+pnpm dev      # http://localhost:3000
+pnpm build
 ```
 
 ## Notes
