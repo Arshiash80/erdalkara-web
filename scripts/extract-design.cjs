@@ -22,6 +22,20 @@ body = body
   .replace(/src="assets\//g, 'src="/assets/')
   .replace(/data-lb="assets\//g, 'data-lb="/assets/');
 
+// Inject a "Blog" link next to each "İletişim" (Contact) nav item — both the
+// desktop nav and the mobile menu — reusing that item's own styling so it
+// matches. Done here (not by hand) so it survives every design re-import.
+{
+  const re = /(<a href="#iletisim"[^>]*style="([^"]*)"[^>]*>İletişim<\/a>)/g;
+  let count = 0;
+  body = body.replace(re, (_m, fullTag, style) => {
+    count++;
+    return `${fullTag}<a href="/blog" data-en="Blog" style="${style}">Blog</a>`;
+  });
+  if (count === 0) console.warn('Blog nav link: no #iletisim anchors found to anchor on');
+  else console.log('Blog nav link injected at', count, 'nav location(s)');
+}
+
 // --- props: defaults the DC runtime would inject as this.props ---
 // (parsed from the dc <script>'s data-props schema so the design renders as authored)
 function htmlUnescape(s) {
