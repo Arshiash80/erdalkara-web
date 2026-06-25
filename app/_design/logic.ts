@@ -164,5 +164,7 @@ class EKDesign {
     });
   }
 }
-  new EKDesign().componentDidMount();
+  const __ek = new EKDesign();
+  __ek.props = {"defaultLang":"tr","accentColor":"#bb6a4a","gentleMotion":true};
+  __ek.componentDidMount();
 }

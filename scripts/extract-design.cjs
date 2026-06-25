@@ -22,6 +22,30 @@ body = body
   .replace(/src="assets\//g, 'src="/assets/')
   .replace(/data-lb="assets\//g, 'data-lb="/assets/');
 
+// --- props: defaults the DC runtime would inject as this.props ---
+// (parsed from the dc <script>'s data-props schema so the design renders as authored)
+function htmlUnescape(s) {
+  return s
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&');
+}
+let propDefaults = {};
+const dpMatch = html.match(/data-props="([^"]*)"/);
+if (dpMatch) {
+  try {
+    const schema = JSON.parse(htmlUnescape(dpMatch[1]));
+    for (const [k, v] of Object.entries(schema)) {
+      if (k === '$preview') continue;
+      if (v && typeof v === 'object' && 'default' in v) propDefaults[k] = v.default;
+    }
+  } catch (e) {
+    console.warn('could not parse data-props:', e.message);
+  }
+}
+
 // --- logic: the DCLogic component class -> plain class ---
 const sStart = html.indexOf('class Component extends DCLogic');
 const sEnd = html.indexOf('</script>', sStart);
@@ -46,7 +70,9 @@ fs.writeFileSync(
   '// AUTO-GENERATED from Claude Design "Erdal Kara.dc.html". Do not edit by hand.\n' +
   'export function initDesign() {\n' +
   logic + '\n' +
-  '  new EKDesign().componentDidMount();\n' +
+  '  const __ek = new EKDesign();\n' +
+  '  __ek.props = ' + JSON.stringify(propDefaults) + ';\n' +
+  '  __ek.componentDidMount();\n' +
   '}\n'
 );
 
