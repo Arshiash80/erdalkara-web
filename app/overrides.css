@@ -1,0 +1,17 @@
+/* Hand-owned patches that sit on top of the auto-generated app/_design/*.
+   Imported LAST in layout.tsx so these always win. Safe across re-imports. */
+
+/* --- Mobile nav fix ---
+   The generated nav hides #ekNavLinks below 920px and shows the burger, but
+   leaves the top-bar "Randevu Al" button in place, crowding the bar and wrapping
+   the wordmark. The booking CTA already lives inside the hamburger menu
+   (#ekMobile), so hide the redundant top-bar button on mobile and keep the
+   wordmark on one line. The TR·EN switch stays (the mobile menu has no toggle). */
+@media (max-width: 920px) {
+  #ekNav a[href*="kolayrandevu"] {
+    display: none !important;
+  }
+  #ekNav > a[data-nav-link] span {
+    white-space: nowrap;
+  }
+}
