@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { MARKUP } from "./_design/markup";
-import { initDesign } from "./_design/logic";
+import { MARKUP } from "../_design/markup";
+import { initDesign } from "../_design/logic";
 
 export default function Home() {
   const ran = useRef(false);

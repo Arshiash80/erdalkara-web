@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import "./globals.css";
-import "./_design/design.css";
-import "./overrides.css";
+import "../globals.css";
+import "../_design/design.css";
+import "../overrides.css";
 
 export const metadata: Metadata = {
   title: "Erdal Kara Hair Design — Bursa Erkek Kuaförü",
