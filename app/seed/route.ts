@@ -168,6 +168,7 @@ export async function GET(req: Request) {
       instagram: "https://www.instagram.com/erdalkarahairdesign",
       facebook: "https://www.facebook.com/kuaforerdalkara",
       googleMaps: "https://www.google.com/maps?q=Erdal+Kara+Hair+Design+So%C4%9Fanl%C4%B1+Osmangazi+Bursa",
+      googleReviewUrl: "https://search.google.com/local/writereview?placeid=ChIJe81oxQk-yhQRG1QqTQzlHqY",
       mapEmbedUrl: "https://www.google.com/maps?q=So%C4%9Fanl%C4%B1%20Mah.%203.%20Meltem%20Sok.%20No%3A23B%20Osmangazi%20Bursa&output=embed",
     },
   });
