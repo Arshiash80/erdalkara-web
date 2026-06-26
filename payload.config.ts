@@ -5,6 +5,8 @@ import { buildConfig } from "payload";
 import { postgresAdapter } from "@payloadcms/db-postgres";
 import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import { s3Storage } from "@payloadcms/storage-s3";
+import { tr } from "@payloadcms/translations/languages/tr";
+import { en } from "@payloadcms/translations/languages/en";
 import sharp from "sharp";
 
 import { Users } from "./payload/collections/Users";
@@ -33,6 +35,14 @@ export default buildConfig({
 
   collections: [Users, Media, Posts],
   globals: [HomePage, SiteSettings],
+
+  // Admin UI language (button labels, etc.). Turkish is the default when a
+  // user has no saved preference / non-matching browser; English stays
+  // selectable from Account → Language.
+  i18n: {
+    supportedLanguages: { tr, en },
+    fallbackLanguage: "tr",
+  },
 
   localization: {
     locales: [
