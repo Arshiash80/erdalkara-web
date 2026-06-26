@@ -44,6 +44,15 @@ export const SiteSettings: GlobalConfig = {
         { name: "instagram", type: "text", label: "Instagram", defaultValue: "https://www.instagram.com/erdalkarahairdesign" },
         { name: "facebook", type: "text", label: "Facebook", defaultValue: "https://www.facebook.com/kuaforerdalkara" },
         { name: "googleMaps", type: "text", label: "Google Haritalar bağlantısı" },
+        {
+          name: "googleReviewUrl",
+          type: "text",
+          label: "Google değerlendirme (yorum bırakma) bağlantısı",
+          admin: {
+            description:
+              "Müşterilerin Google'da yorum bırakması için: https://search.google.com/local/writereview?placeid=YER_KIMLIGI (Place ID). Boş bırakılırsa değerlendirme butonları gizlenir.",
+          },
+        },
         { name: "mapEmbedUrl", type: "textarea", label: "Harita gömme (embed) URL" },
       ],
     },

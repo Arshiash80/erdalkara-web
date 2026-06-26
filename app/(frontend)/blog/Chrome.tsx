@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getSettings } from "../settings";
 
 const BOOKING_URL = "https://www.kolayrandevu.com/kisi/erdal-kara78";
 
@@ -31,11 +32,24 @@ export function BlogHeader() {
   );
 }
 
-export function BlogFooter() {
+export async function BlogFooter() {
+  const settings = await getSettings();
+  const reviewUrl = settings?.googleReviewUrl?.trim();
+
   return (
     <footer className="ekbFooter">
       <div className="ekbFooterInner">
         <span>© 2026 Erdal Kara Hair Design — Bursa</span>
+        {reviewUrl && (
+          <a
+            href={reviewUrl}
+            target="_blank"
+            rel="noopener"
+            className="ekbReadmore"
+          >
+            Bizi Google&apos;da değerlendirin ★
+          </a>
+        )}
         <span>Soğanlı Mah. 3. Meltem Sok. No:23B, Osmangazi / Bursa</span>
       </div>
     </footer>
