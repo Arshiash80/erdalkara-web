@@ -9,7 +9,8 @@
     "lint": "eslint",
     "payload": "payload",
     "generate:types": "payload generate:types",
-    "generate:importmap": "payload generate:importmap"
+    "generate:importmap": "payload generate:importmap",
+    "seed": "node --env-file=.env -e \"const s=encodeURIComponent(process.env.PAYLOAD_SECRET);fetch('http://localhost:3000/seed?secret='+s).then(r=>r.json()).then(o=>console.log(JSON.stringify(o,null,2))).catch(e=>{console.error('Is the dev server running on :3000?',e.message);process.exit(1)})\""
   },
   "dependencies": {
     "@payloadcms/db-postgres": "3.85.1",
@@ -33,9 +34,14 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
     "tailwindcss": "^4",
+    "tsx": "^4.22.4",
     "typescript": "^5"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["sharp", "esbuild", "unrs-resolver"]
+    "onlyBuiltDependencies": [
+      "sharp",
+      "esbuild",
+      "unrs-resolver"
+    ]
   }
 }

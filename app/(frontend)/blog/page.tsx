@@ -1,8 +1,10 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import "./blog.css";
-import { getAllPosts } from "./posts";
+import { listPosts } from "./data";
 import { BlogHeader, BlogFooter } from "./Chrome";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Blog — Erdal Kara Hair Design",
@@ -26,8 +28,8 @@ function Meta({
   );
 }
 
-export default function BlogIndex() {
-  const posts = getAllPosts();
+export default async function BlogIndex() {
+  const posts = await listPosts();
   const [featured, ...rest] = posts;
 
   return (
@@ -44,14 +46,20 @@ export default function BlogIndex() {
           </p>
         </section>
 
+        {posts.length === 0 && (
+          <p style={{ color: "var(--muted)" }}>Henüz yazı yayınlanmadı.</p>
+        )}
+
         {featured && (
           <Link
             href={`/blog/${featured.slug}`}
             className="ekbFeatured"
             aria-label={featured.title}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img className="img" src={featured.cover} alt={featured.title} />
+            {featured.cover && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img className="img" src={featured.cover} alt={featured.coverAlt} />
+            )}
             <div className="body">
               <span className="ekbTagPill">{featured.tag}</span>
               <h2>{featured.title}</h2>
@@ -74,8 +82,10 @@ export default function BlogIndex() {
               className="ekbCard"
               aria-label={post.title}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className="img" src={post.cover} alt={post.title} />
+              {post.cover && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img className="img" src={post.cover} alt={post.coverAlt} />
+              )}
               <div className="body">
                 <span className="ekbTagPill">{post.tag}</span>
                 <h3>{post.title}</h3>

@@ -1,13 +1,12 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { RichText } from "@payloadcms/richtext-lexical/react";
 import "../blog.css";
-import { getAllPosts, getPost, type Block } from "../posts";
+import { getPost } from "../data";
 import { BlogHeader, BlogFooter, BOOKING_URL } from "../Chrome";
 
-export function generateStaticParams() {
-  return getAllPosts().map((p) => ({ slug: p.slug }));
-}
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
@@ -15,35 +14,12 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const post = getPost(slug);
+  const post = await getPost(slug);
   if (!post) return { title: "Yazı bulunamadı — Erdal Kara Hair Design" };
   return {
     title: `${post.title} — Erdal Kara Hair Design`,
     description: post.excerpt,
   };
-}
-
-function renderBlock(block: Block, i: number) {
-  switch (block.type) {
-    case "h2":
-      return <h2 key={i}>{block.text}</h2>;
-    case "p":
-      return <p key={i}>{block.text}</p>;
-    case "quote":
-      return (
-        <blockquote key={i} className="ekbQuote">
-          {block.text}
-        </blockquote>
-      );
-    case "list":
-      return (
-        <ul key={i}>
-          {block.items.map((it, j) => (
-            <li key={j}>{it}</li>
-          ))}
-        </ul>
-      );
-  }
 }
 
 export default async function BlogPost({
@@ -52,7 +28,7 @@ export default async function BlogPost({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const post = getPost(slug);
+  const post = await getPost(slug);
   if (!post) notFound();
 
   return (
@@ -79,12 +55,16 @@ export default async function BlogPost({
             </div>
           </header>
 
-          <div className="ekbCover">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={post.cover} alt={post.title} />
-          </div>
+          {post.cover && (
+            <div className="ekbCover">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={post.cover} alt={post.coverAlt} />
+            </div>
+          )}
 
-          <div className="ekbProse">{post.body.map(renderBlock)}</div>
+          <div className="ekbProse">
+            {post.content && <RichText data={post.content} />}
+          </div>
 
           <aside className="ekbCta">
             <h3>Sıra sizde</h3>
