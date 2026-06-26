@@ -1,13 +1,28 @@
-import { MARKUP } from "../_design/markup";
+import { getPayload } from "payload";
+import config from "@payload-config";
 import HomeClient from "./HomeClient";
-import { getSettings } from "./settings";
+import { renderHome } from "./renderHome";
 
-// Reads the Google review link from the CMS at request time.
+// Renders the homepage from the `home` + `settings` globals at request time.
 export const dynamic = "force-dynamic";
 
-// Inject a "leave a Google review" CTA into the static design markup, at
-// runtime (anchored on stable ids), so regenerating the design can't drop it.
-// `data-en` lets the existing language toggle localize the label.
+// Fetch both globals with every locale (TR + EN) so the design's language
+// toggle keeps working, and depth:1 so gallery uploads resolve to URLs.
+async function getHomeData() {
+  try {
+    const payload = await getPayload({ config });
+    const [home, settings] = await Promise.all([
+      payload.findGlobal({ slug: "home", locale: "all", depth: 1 }),
+      payload.findGlobal({ slug: "settings", locale: "all", depth: 0 }),
+    ]);
+    return { home, settings };
+  } catch {
+    return { home: null, settings: null };
+  }
+}
+
+// Inject a "leave a Google review" CTA into the design markup, anchored on
+// stable ids. `data-en` lets the existing language toggle localize the label.
 function injectReviewCtas(markup: string, reviewUrl: string): string {
   let html = markup;
 
@@ -44,9 +59,20 @@ function injectReviewCtas(markup: string, reviewUrl: string): string {
 }
 
 export default async function Home() {
-  const settings = await getSettings();
-  const reviewUrl = settings?.googleReviewUrl?.trim();
-  const html = reviewUrl ? injectReviewCtas(MARKUP, reviewUrl) : MARKUP;
+  const { home, settings } = await getHomeData();
 
-  return <HomeClient html={html} />;
+  let html = renderHome(home, settings);
+
+  const reviewUrl =
+    typeof settings?.googleReviewUrl === "string"
+      ? settings.googleReviewUrl.trim()
+      : "";
+  if (reviewUrl) html = injectReviewCtas(html, reviewUrl);
+
+  return (
+    <>
+      <div dangerouslySetInnerHTML={{ __html: html }} />
+      <HomeClient />
+    </>
+  );
 }

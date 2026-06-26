@@ -22,6 +22,8 @@ export const Posts: CollectionConfig = {
     useAsTitle: "title",
     defaultColumns: ["title", "tag", "publishedDate", "_status"],
     group: "İçerik",
+    description:
+      "Blog yazıları (site üzerindeki /blog sayfasında listelenir). Yeni yazı için sağ üstten 'Oluştur'. Yazıyı sitede yayınlamak için sağdaki durumu 'Yayınla' yapın — 'Taslak' yazılar sitede görünmez.",
   },
   access: {
     // Public can read published posts; drafts stay admin-only.
@@ -50,6 +52,7 @@ export const Posts: CollectionConfig = {
       label: "Başlık",
       required: true,
       localized: true,
+      admin: { description: "Yazının başlığı. Blog listesinde ve yazının en üstünde görünür." },
     },
     {
       name: "slug",
@@ -69,6 +72,7 @@ export const Posts: CollectionConfig = {
       admin: {
         position: "sidebar",
         date: { pickerAppearance: "dayOnly" },
+        description: "Yazının tarihi. Blog en yeniden eskiye doğru sıralanır.",
       },
     },
     {
@@ -83,32 +87,47 @@ export const Posts: CollectionConfig = {
         { label: "Çocuk", value: "Çocuk" },
         { label: "Genel", value: "Genel" },
       ],
-      admin: { position: "sidebar" },
+      admin: {
+        position: "sidebar",
+        description: "Yazının konusu. Kart üzerinde küçük etiket olarak görünür.",
+      },
     },
     {
       name: "author",
       type: "text",
       label: "Yazar",
       defaultValue: "Erdal Kara",
-      admin: { position: "sidebar" },
+      admin: { position: "sidebar", description: "Yazının altında görünen yazar adı." },
     },
     {
       name: "coverImage",
       type: "upload",
       relationTo: "media",
       label: "Kapak görseli",
+      admin: {
+        description:
+          "Yazının büyük kapak fotoğrafı. Blog listesinde ve yazının başında görünür. Yatay (geniş) fotoğraf önerilir.",
+      },
     },
     {
       name: "excerpt",
       type: "textarea",
       label: "Özet",
       localized: true,
+      admin: {
+        description:
+          "1–2 cümlelik kısa özet. Blog listesinde başlığın altında ve Google sonuçlarında görünür.",
+      },
     },
     {
       name: "content",
       type: "richText",
       label: "İçerik",
       localized: true,
+      admin: {
+        description:
+          "Yazının tam metni. Başlık, kalın, liste vb. biçimlendirmeyi araç çubuğundan ekleyebilirsiniz.",
+      },
     },
   ],
 };

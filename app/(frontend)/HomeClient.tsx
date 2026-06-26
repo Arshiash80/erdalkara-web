@@ -3,9 +3,10 @@
 import { useEffect, useRef } from "react";
 import { initDesign } from "../_design/logic";
 
-// Renders the (server-prepared) design markup and wires up its behaviors:
-// reveal-on-scroll, nav, language toggle, gallery, card hovers.
-export default function HomeClient({ html }: { html: string }) {
+// Init-only: wires up the server-rendered design markup (reveal-on-scroll, nav,
+// language toggle, gallery lightbox, card hovers). Renders nothing itself, so
+// the (large) markup isn't serialized into the RSC payload as a prop.
+export default function HomeClient() {
   const ran = useRef(false);
 
   useEffect(() => {
@@ -14,5 +15,5 @@ export default function HomeClient({ html }: { html: string }) {
     initDesign();
   }, []);
 
-  return <div dangerouslySetInnerHTML={{ __html: html }} />;
+  return null;
 }
