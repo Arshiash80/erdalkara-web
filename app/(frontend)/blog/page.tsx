@@ -6,10 +6,24 @@ import { BlogHeader, BlogFooter } from "./Chrome";
 
 export const dynamic = "force-dynamic";
 
+const BLOG_DESC =
+  "Saç, sakal ve cilt bakımı üzerine ipuçları, rehberler ve Erdal Kara Hair Design'dan notlar.";
+
 export const metadata: Metadata = {
-  title: "Blog — Erdal Kara Hair Design",
-  description:
-    "Saç, sakal ve cilt bakımı üzerine ipuçları, rehberler ve Erdal Kara Hair Design'dan notlar.",
+  title: "Blog",
+  description: BLOG_DESC,
+  alternates: { canonical: "/blog" },
+  openGraph: {
+    type: "website",
+    title: "Blog — Erdal Kara Hair Design",
+    description: BLOG_DESC,
+    url: "/blog",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Blog — Erdal Kara Hair Design",
+    description: BLOG_DESC,
+  },
 };
 
 function Meta({
